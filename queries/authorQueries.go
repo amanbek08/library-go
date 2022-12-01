@@ -83,3 +83,16 @@ func DeleteAuthor(id int) error {
 
 	return nil
 }
+
+func GetAuthorsBooks(id int) ([]string, error) {
+	db := database.Connect()
+	books := []string{}
+	query := `SELECT * FROM books WHERE AuthorID = $1`
+
+	err := db.Select(&books, query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return books, nil
+}

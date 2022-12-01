@@ -37,6 +37,12 @@ func AddBook(b *models.Book) error {
 		return err
 	}
 
+	_, err = db.Exec("INSERT INTO authors_books VALUES ($1, $2)", b.AuthorID, b.ID)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

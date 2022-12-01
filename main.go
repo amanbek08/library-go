@@ -15,12 +15,14 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/book", data.AddBook)
 	app.Patch("/book/:id", data.UpdateBook)
 	app.Delete("/book/:id", data.DeleteBook)
+	app.Get("")
 
 	app.Get("/authors", data.GetAuthors)
 	app.Get("/author/:id", data.GetAuthor)
 	app.Post("/author", data.AddAuthor)
 	app.Patch("/author/:id", data.UpdateAuthor)
 	app.Delete("/author/:id", data.DeleteAuthor)
+	app.Get("/author")
 }
 
 func main() {
