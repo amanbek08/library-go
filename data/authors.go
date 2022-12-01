@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-func GetBooks(c *fiber.Ctx) error {
+func GetAuthors(c *fiber.Ctx) error {
 
-	books := []models.Book{}
+	a := []models.Author{}
 
-	books, err := queries.GetBooks()
+	a, err := queries.GetAuthors()
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -20,17 +20,17 @@ func GetBooks(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(books)
+	return c.JSON(a)
 
 }
 
-func GetBook(c *fiber.Ctx) error {
+func GetAuthor(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		panic(err)
 	}
 
-	book, err := queries.GetBook(id)
+	a, err := queries.GetAuthor(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -39,12 +39,12 @@ func GetBook(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(book)
+	return c.JSON(a)
 }
 
-func AddBook(c *fiber.Ctx) error {
-	book := &models.Book{}
-	if err := c.BodyParser(book); err != nil {
+func AddAuthor(c *fiber.Ctx) error {
+	a := &models.Author{}
+	if err := c.BodyParser(a); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   true,
 			"msg":     err.Error(),
@@ -52,7 +52,7 @@ func AddBook(c *fiber.Ctx) error {
 		})
 	}
 
-	err := queries.AddBook(book)
+	err := queries.AddAuthor(a)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
@@ -60,12 +60,12 @@ func AddBook(c *fiber.Ctx) error {
 		})
 	}
 
-	return GetBooks(c)
+	return GetAuthors(c)
 }
 
-func UpdateBook(c *fiber.Ctx) error {
+func UpdateAuthor(c *fiber.Ctx) error {
 
-	book := &models.Book{}
+	a := &models.Author{}
 
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
@@ -75,14 +75,14 @@ func UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := c.BodyParser(book); err != nil {
+	if err := c.BodyParser(a); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
 			"msg":   err.Error(),
 		})
 	}
 
-	err = queries.UpdateBook(id, book)
+	err = queries.UpdateAuthor(id, a)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -91,10 +91,10 @@ func UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	return GetBooks(c)
+	return GetAuthors(c)
 }
 
-func DeleteBook(c *fiber.Ctx) error {
+func DeleteAuthor(c *fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -103,7 +103,7 @@ func DeleteBook(c *fiber.Ctx) error {
 		})
 	}
 
-	err = queries.DeleteBook(id)
+	err = queries.DeleteAuthor(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

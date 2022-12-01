@@ -3,7 +3,9 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	_ "github.com/lib/pq"
 	"library-go/data"
+	"library-go/database"
 	"log"
 )
 
@@ -12,9 +14,17 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/book/:id", data.GetBook)
 	app.Post("/book", data.AddBook)
 	app.Patch("/book/:id", data.UpdateBook)
+	app.Delete("/book/:id", data.DeleteBook)
+
+	app.Get("/authors", data.GetAuthors)
+	app.Get("/author/:id", data.GetAuthor)
+	app.Post("/author", data.AddAuthor)
+	app.Patch("/author/:id", data.UpdateAuthor)
+	app.Delete("/author/:id", data.DeleteAuthor)
 }
 
 func main() {
+	database.CreateTables()
 
 	app := fiber.New()
 

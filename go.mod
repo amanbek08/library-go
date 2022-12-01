@@ -2,7 +2,11 @@ module library-go
 
 go 1.19
 
-require github.com/gofiber/fiber/v2 v2.40.1
+require (
+	github.com/gofiber/fiber/v2 v2.40.1
+	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.10.7
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
