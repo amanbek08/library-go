@@ -52,9 +52,9 @@ func CreateTables() error {
 	schema = `CREATE TABLE members_books (
 	MemberID integer,
 	BookID integer,
-	CONSTRAINT FK_author FOREIGN KEY(MemberID)
+	CONSTRAINT FK_member FOREIGN KEY(MemberID)
         REFERENCES members(ID),
-    CONSTRAINT FK_author FOREIGN KEY(BookID)
+    CONSTRAINT FK_book FOREIGN KEY(BookID)
         REFERENCES books(ID));`
 
 	_, err = db.Exec("DROP TABLE IF EXISTS members_books")

@@ -60,7 +60,7 @@ func AddMember(c *fiber.Ctx) error {
 		})
 	}
 
-	return GetAuthors(c)
+	return GetMembers(c)
 }
 
 func UpdateMember(c *fiber.Ctx) error {
@@ -140,4 +140,27 @@ func AddMemberBook(c *fiber.Ctx) error {
 	}
 
 	return nil
+}
+
+func GetMemberBooks(c *fiber.Ctx) error {
+	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
+
+	b := []string{}
+
+	b, err = queries.GetMemberBooks(id)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
+
+	return c.JSON(b)
 }
