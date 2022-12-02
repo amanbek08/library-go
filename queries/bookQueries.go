@@ -5,6 +5,8 @@ import (
 	"library-go/models"
 )
 
+var lastbID = 0
+
 func GetBooks() ([]models.Book, error) {
 	db := database.Connect()
 	b := []models.Book{}
@@ -28,14 +30,40 @@ func GetBook(id int) (models.Book, error) {
 	return b, nil
 }
 
+func getLastBookID() (int, error) {
+	db := database.Connect()
+	var id int
+	query := `SELECT ID
+	FROM books 
+	ORDER BY ID DESC 
+	LIMIT 1`
+	err := db.Get(&id, query)
+
+	if err != nil {
+		return -1, err
+	}
+
+	return id, nil
+}
+
 func AddBook(b *models.Book) error {
 	db := database.Connect()
+
+	//id, err := getLastBookID()
+	//
+	//if err != nil {
+	//	return err
+	//}
+
+	b.ID = lastbID
 
 	_, err := db.Exec("INSERT INTO books VALUES ($1, $2, $3, $4, $5)", b.ID, b.Name, b.Genre, b.ISBN, b.AuthorID)
 
 	if err != nil {
 		return err
 	}
+
+	lastbID = lastbID + 1
 
 	return nil
 }

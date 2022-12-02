@@ -5,6 +5,8 @@ import (
 	"library-go/models"
 )
 
+var lastmID = 0
+
 func GetMembers() ([]models.Member, error) {
 	db := database.Connect()
 	m := []models.Member{}
@@ -28,14 +30,40 @@ func GetMember(id int) (models.Member, error) {
 	return m, nil
 }
 
+func getLastMemberID() (int, error) {
+	db := database.Connect()
+	var id int
+	query := `SELECT ID
+	FROM members 
+	ORDER BY ID DESC 
+	LIMIT 1`
+	err := db.Get(&id, query)
+
+	if err != nil {
+		return -1, err
+	}
+
+	return id, nil
+}
+
 func AddMember(m *models.Member) error {
 	db := database.Connect()
 
-	_, err := db.Exec("INSERT INTO members VALUES ($1, $2)", m.ID, m.Name)
+	//id, err := getLastMemberID()
+	//
+	//if err != nil {
+	//	return err
+	//}
+
+	id := lastmID
+
+	_, err := db.Exec("INSERT INTO members VALUES ($1, $2)", id, m.Name)
 
 	if err != nil {
 		return err
 	}
+
+	lastmID = lastmID + 1
 
 	return nil
 }

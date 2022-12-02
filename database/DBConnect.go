@@ -5,19 +5,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "postgres"
-	dbname   = "test_db"
-)
-
 func Connect() *sqlx.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	host := "db"
+	port := 5432
+	user := "postgres"
+	password := "postgres"
+	dbname := "test_db"
 
+	psqlInfo := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		user, password, host, port, dbname)
 	db, err := sqlx.Open("postgres", psqlInfo)
 
 	if err != nil {

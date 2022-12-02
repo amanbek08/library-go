@@ -11,7 +11,7 @@ func CreateTables() error {
 	ISBN text,
 	AuthorID integer);`
 
-	_, err := db.Exec("DROP TABLE IF EXISTS books")
+	_, err := db.Exec("DROP TABLE IF EXISTS books CASCADE")
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func CreateTables() error {
 	ID integer CONSTRAINT members_pk PRIMARY KEY,
 	Name text);`
 
-	_, err = db.Exec("DROP TABLE IF EXISTS members")
+	_, err = db.Exec("DROP TABLE IF EXISTS members CASCADE")
 	if err != nil {
 		return err
 	}
