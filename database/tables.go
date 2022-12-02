@@ -5,7 +5,7 @@ func CreateTables() error {
 	db := Connect()
 
 	schema := `CREATE TABLE books (
-	ID integer CONSTRAINT books_pk PRIMARY KEY,
+	ID serial8 CONSTRAINT books_pk PRIMARY KEY,
 	Name text,
 	Genre text,
 	ISBN text,
@@ -22,7 +22,7 @@ func CreateTables() error {
 	}
 
 	schema = `CREATE TABLE authors (
-	ID integer CONSTRAINT authors_pk PRIMARY KEY,
+	ID serial8 CONSTRAINT authors_pk PRIMARY KEY,
 	Name text,
 	Nickname text,
 	Speciality text);`
@@ -37,7 +37,7 @@ func CreateTables() error {
 	}
 
 	schema = `CREATE TABLE members (
-	ID integer CONSTRAINT members_pk PRIMARY KEY,
+	ID serial8 CONSTRAINT members_pk PRIMARY KEY,
 	Name text);`
 
 	_, err = db.Exec("DROP TABLE IF EXISTS members CASCADE")

@@ -5,8 +5,6 @@ import (
 	"library-go/models"
 )
 
-var lastaID = 0
-
 func GetAuthors() ([]models.Author, error) {
 	db := database.Connect()
 	a := []models.Author{}
@@ -30,40 +28,14 @@ func GetAuthor(id int) (models.Author, error) {
 	return a, nil
 }
 
-func getLastAuthorID() (int, error) {
-	db := database.Connect()
-	var id int
-	query := `SELECT ID
-	FROM authors 
-	ORDER BY ID DESC 
-	LIMIT 1`
-	err := db.Get(&id, query)
-
-	if err != nil {
-		return -1, err
-	}
-
-	return id, nil
-}
-
 func AddAuthor(a *models.Author) error {
 	db := database.Connect()
 
-	//id, err := getLastAuthorID()
-	//
-	//if err != nil {
-	//	return err
-	//}
-
-	id := lastaID
-
-	_, err := db.Exec("INSERT INTO authors VALUES ($1, $2, $3, $4)", id, a.Name, a.Nickname, a.Speciality)
+	_, err := db.Exec("INSERT INTO authors (name, nickname, speciality) VALUES ($1, $2, $3)", a.Name, a.Nickname, a.Speciality)
 
 	if err != nil {
 		return err
 	}
-
-	lastaID = lastaID + 1
 
 	return nil
 }

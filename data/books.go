@@ -52,7 +52,16 @@ func AddBook(c *fiber.Ctx) error {
 		})
 	}
 
-	err := queries.AddBook(book)
+	_, err := queries.GetAuthor(book.AuthorID)
+
+	if err != nil && err.Error() == "sql: no rows in result set" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": true,
+			"msg":   "No such Author, choose other author",
+		})
+	}
+
+	err = queries.AddBook(book)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,

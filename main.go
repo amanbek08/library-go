@@ -33,7 +33,11 @@ func setupRoutes(app *fiber.App) {
 }
 
 func main() {
-	database.CreateTables()
+	err := database.CreateTables()
+
+	if err != nil {
+		println("tables not created")
+	}
 
 	app := fiber.New()
 
